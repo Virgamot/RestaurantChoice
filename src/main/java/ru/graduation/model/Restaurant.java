@@ -3,7 +3,7 @@ package ru.graduation.model;
 import java.util.Arrays;
 import java.util.List;
 
-public class Restaurant {
+public class Restaurant extends BaseEntity {
     private String address;
     private List<Dish> dishes;
 

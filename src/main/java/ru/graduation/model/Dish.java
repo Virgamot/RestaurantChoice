@@ -1,6 +1,6 @@
 package ru.graduation.model;
 
-public class Dish {
+public class Dish extends BaseEntity {
     private String description;
     private Double price;
 

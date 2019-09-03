@@ -2,7 +2,7 @@ package ru.graduation.model;
 
 import java.util.Set;
 
-public class User {
+public class User extends BaseEntity {
     private String name;
     private String email;
     private String password;
