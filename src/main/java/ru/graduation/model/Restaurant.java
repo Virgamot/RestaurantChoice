@@ -7,9 +7,10 @@ public class Restaurant extends BaseEntity {
     private String address;
     private List<Dish> dishes;
 
-    public Restaurant(String address, Dish... dishes) {
+    public Restaurant(Integer id, String address, Dish... dishes) {
         this.address = address;
         this.dishes = Arrays.asList(dishes);
+        this.setId(id);
     }
 
     public String getAddress() {
@@ -18,5 +19,9 @@ public class Restaurant extends BaseEntity {
 
     public List<Dish> getDishes() {
         return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 }
