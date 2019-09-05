@@ -29,6 +29,10 @@ public class BaseEntity implements HasId {
         return super.equals(obj);
     }
 
+    public boolean isNew() {
+        return (this.id == null);
+    }
+
     @Override
     public String toString() {
         return String.format("Entity of type %s with id: %s", getClass().getName(), getId());
