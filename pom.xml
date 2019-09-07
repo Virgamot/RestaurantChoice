@@ -6,14 +6,14 @@
 
     <groupId>ru.graduation</groupId>
     <artifactId>graduation</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <version>1.0-SNAPSHOT</version>
 
-    <name>Restaurant Vote</name>
+    <name>Restaurant Choice</name>
 
     <properties>
-        <java.vesrsion>1.8</java.vesrsion>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
