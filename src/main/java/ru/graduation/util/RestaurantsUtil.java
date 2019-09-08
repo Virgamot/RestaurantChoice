@@ -9,8 +9,11 @@ import static ru.graduation.util.DishUtil.DISHES;
 
 public class RestaurantsUtil {
 
-    public static Restaurant RESTAURANT_1 = new Restaurant(100001, "St.Petersburg, Leninskiy Prospect st., 21");
-    public static Restaurant RESTAURANT_2 = new Restaurant(100002, "St.Petersburg, Panfilova st., 87");
+    public static final Restaurant RESTAURANT_1 = new Restaurant(100001, "St.Petersburg, Leninskiy Prospect st., 21");
+    public static final Restaurant RESTAURANT_2 = new Restaurant(100002, "St.Petersburg, Panfilova st., 87");
+
+    public static final List<Restaurant> RESTAURANTS = Arrays.asList(RESTAURANT_1, RESTAURANT_2);
+
 
     public static List<Restaurant> getAllWithDishes(List<Restaurant> restaurants, List<Dish> dishes) {
         Map<Integer, List<Dish>> restaurantsWithDishes = new HashMap<>();
@@ -30,6 +33,13 @@ public class RestaurantsUtil {
 
         return restaurants;
     }
+
+
+    //TODO
+    public static Restaurant getWithDishes(Restaurant restaurant){
+        return null;
+    }
+
 
     public static void main(String[] args) {
         getAllWithDishes(Arrays.asList(RESTAURANT_1, RESTAURANT_2), DISHES).forEach(r -> {

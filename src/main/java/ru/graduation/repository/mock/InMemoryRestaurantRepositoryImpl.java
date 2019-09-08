@@ -3,14 +3,13 @@ package ru.graduation.repository.mock;
 import org.springframework.stereotype.Repository;
 import ru.graduation.model.Restaurant;
 import ru.graduation.repository.RestaurantRepository;
+import ru.graduation.util.RestaurantsUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static ru.graduation.util.RestaurantsUtil.RESTAURANT_1;
-import static ru.graduation.util.RestaurantsUtil.RESTAURANT_2;
 
 @Repository
 public class InMemoryRestaurantRepositoryImpl implements RestaurantRepository {
@@ -19,8 +18,9 @@ public class InMemoryRestaurantRepositoryImpl implements RestaurantRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        repository.put(RESTAURANT_1.getId(), RESTAURANT_1);
-        repository.put(RESTAURANT_2.getId(), RESTAURANT_2);
+        RestaurantsUtil.RESTAURANTS.forEach(r -> {
+            repository.put(r.getId(), r);
+        });
     }
 
     @Override
@@ -36,22 +36,23 @@ public class InMemoryRestaurantRepositoryImpl implements RestaurantRepository {
         return null;
     }
 
-
-    //TODO
     @Override
     public boolean delete(int id) {
-        return false;
+        if (repository.containsKey(id)) {
+            repository.remove(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    //TODO
     @Override
     public Restaurant get(int id) {
-        return null;
+        return repository.get(id);
     }
 
-    //TODO
     @Override
     public List<Restaurant> getAll() {
-        return null;
+        return new ArrayList<>(repository.values());
     }
 }
