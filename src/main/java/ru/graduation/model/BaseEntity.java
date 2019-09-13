@@ -2,8 +2,16 @@ package ru.graduation.model;
 
 import ru.graduation.HasId;
 
+import javax.persistence.*;
+
+
+@MappedSuperclass
+@Access(AccessType.FIELD)
 public class BaseEntity implements HasId {
 
+    @Id
+    @SequenceGenerator(name="global_seq",sequenceName = "global_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "global_seq")
     private Integer id;
 
     public BaseEntity() {

@@ -20,6 +20,10 @@
         <!--Database-->
         <hsqldb.version>2.4.1</hsqldb.version>
 
+        <!--Hibernate-->
+        <hibernate.version>5.4.2.Final</hibernate.version>
+        <hibernate-validator.version>6.0.17.Final</hibernate-validator.version>
+
         <!--Test-->
         <!--<junit.version>5.3.1</junit.version>-->
 
@@ -57,12 +61,45 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
         <!--Database-->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>${hsqldb.version}</version>
-            <scope>test</scope>
+            <!--<scope>test</scope>-->
+        </dependency>
+
+        <!--ORM-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>2.2.5</version>
+            <scope>provided</scope>
         </dependency>
 
         <!--JUnit5-->
