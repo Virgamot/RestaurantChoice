@@ -1,5 +1,8 @@
 package ru.graduation.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -14,9 +17,12 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "dishes")
 public class Dish extends BaseEntity {
 
-    public static final String DELETE="Dish.delete";
-    public static final String GET_ALL="Dish.getAll";
+    public static final String DELETE = "Dish.delete";
+    public static final String GET_ALL = "Dish.getAll";
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @Column(name = "description", nullable = false)
