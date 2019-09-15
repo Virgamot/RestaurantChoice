@@ -44,6 +44,13 @@ public class Dish extends BaseEntity {
         this.price = price;
     }
 
+    public Dish(Integer id, Restaurant restaurant, String description, Double price) {
+        super(id);
+        this.restaurant = restaurant;
+        this.description = description;
+        this.price = price;
+    }
+
     public String getDescription() {
         return description;
     }
