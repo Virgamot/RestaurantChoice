@@ -33,6 +33,9 @@ public class Dish extends BaseEntity {
     @NotEmpty
     private Double price;
 
+    public Dish() {
+    }
+
     public Dish(String description, Double price) {
         this.description = description;
         this.price = price;

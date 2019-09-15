@@ -3,13 +3,14 @@ package ru.graduation.repository.mock;
 import org.springframework.stereotype.Repository;
 import ru.graduation.model.Restaurant;
 import ru.graduation.repository.RestaurantRepository;
-import ru.graduation.util.RestaurantsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static ru.graduation.RestaurantTestData.RESTAURANTS;
 
 @Repository
 public class InMemoryRestaurantRepositoryImpl implements RestaurantRepository {
@@ -18,7 +19,7 @@ public class InMemoryRestaurantRepositoryImpl implements RestaurantRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        RestaurantsUtil.RESTAURANTS.forEach(r -> {
+        RESTAURANTS.forEach(r -> {
             repository.put(r.getId(), r);
         });
     }

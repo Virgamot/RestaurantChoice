@@ -8,12 +8,15 @@ import java.util.List;
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends BaseEntity {
-    @Column(name = "address",nullable = false)
+    @Column(name = "address", nullable = false)
     @NotEmpty
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Dish> dishes;
+
+    public Restaurant() {
+    }
 
     public Restaurant(Integer id, String address, Dish... dishes) {
         this.address = address;

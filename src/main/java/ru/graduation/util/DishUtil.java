@@ -2,11 +2,7 @@ package ru.graduation.util;
 
 import ru.graduation.model.Dish;
 
-import java.util.Arrays;
 import java.util.List;
-
-import static ru.graduation.util.RestaurantsUtil.RESTAURANT_1;
-import static ru.graduation.util.RestaurantsUtil.RESTAURANT_2;
 
 public class DishUtil {
 
