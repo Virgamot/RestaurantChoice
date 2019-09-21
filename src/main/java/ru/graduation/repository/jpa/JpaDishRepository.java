@@ -1,6 +1,7 @@
 package ru.graduation.repository.jpa;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.model.Dish;
 import ru.graduation.repository.DishRepository;
 
@@ -9,12 +10,14 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class JpaDishRepository implements DishRepository {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
+    @Transactional
     public Dish save(Dish dish) {
         if (dish.isNew()) {
             em.persist(dish);
@@ -25,8 +28,10 @@ public class JpaDishRepository implements DishRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
         return em.createNamedQuery(Dish.DELETE)
+                .setParameter("id",id)
                 .executeUpdate() != 0;
     }
 

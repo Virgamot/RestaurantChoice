@@ -5,6 +5,7 @@ import ru.graduation.model.Dish;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.graduation.RestaurantTestData.RESTAURANT_1;
 import static ru.graduation.RestaurantTestData.RESTAURANT_2;
 import static ru.graduation.model.BaseEntity.START_SEQ;
@@ -29,4 +30,20 @@ public class DishTestData {
 
     public static final List<Dish> DISHES = Arrays.asList(DISH_1, DISH_2, DISH_3, DISH_4, DISH_5, DISH_6,
             DISH_7, DISH_8, DISH_9, DISH_10, DISH_11);
+
+    public static Dish getCreated() {
+        return new Dish(null, RESTAURANT_2, "Created dish", 20d);
+    }
+
+    public static void assertMatch(Dish actual, Dish expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
+    }
+
+    public static void assertMatch(Iterable<Dish> actual, Dish... excpected) {
+        assertMatch(actual, Arrays.asList(excpected));
+    }
+
+    public static void assertMatch(Iterable<Dish> actual, Iterable<Dish> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+    }
 }
