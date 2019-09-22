@@ -5,9 +5,20 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.List;
 
+
+@SuppressWarnings("JpaQlInspection")
+@NamedQueries({
+        @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
+        @NamedQuery(name = Restaurant.GET_ALL, query = "SELECT r FROM Restaurant r")
+})
+
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends BaseEntity {
+
+    public static final String DELETE = "Restaurant.delete";
+    public static final String GET_ALL = "Restaurant.getAll";
+
     @Column(name = "address", nullable = false)
     @NotEmpty
     private String address;

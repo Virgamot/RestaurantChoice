@@ -1,6 +1,5 @@
 package ru.graduation.repository.mock;
 
-import org.springframework.stereotype.Repository;
 import ru.graduation.model.Restaurant;
 import ru.graduation.repository.RestaurantRepository;
 
@@ -12,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.graduation.RestaurantTestData.RESTAURANTS;
 
-@Repository
 public class InMemoryRestaurantRepositoryImpl implements RestaurantRepository {
 
     private Map<Integer, Restaurant> repository = new ConcurrentHashMap<>();

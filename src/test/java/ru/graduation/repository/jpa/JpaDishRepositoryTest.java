@@ -2,10 +2,8 @@ package ru.graduation.repository.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.graduation.model.Dish;
+import ru.graduation.repository.AbstractRepositoryTest;
 import ru.graduation.repository.DishRepository;
 
 import java.util.ArrayList;
@@ -13,13 +11,7 @@ import java.util.List;
 
 import static ru.graduation.DishTestData.*;
 
-
-@SpringJUnitConfig(locations = {
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-class JpaDishRepositoryTest {
+class JpaDishRepositoryTest extends AbstractRepositoryTest {
 
     @Autowired
     private DishRepository repository;
