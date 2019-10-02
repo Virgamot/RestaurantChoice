@@ -1,4 +1,4 @@
-package ru.graduation.repository.jpa;
+package ru.graduation.repository.datajpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static ru.graduation.RestaurantTestData.*;
 
-class JpaRestaurantRepositoryTest extends AbstractRepositoryTest {
+class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
 
     @Autowired
     private RestaurantRepository repository;
