@@ -5,7 +5,7 @@
     <jmxConfigurator/>
 
     <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>${PROJECT_ROOT}/log/graduation.log</file>
+        <file>${GRADUATION_ROOT}/log/graduation.log</file>
 
         <encoder>
             <charset>UTF-8</charset>
