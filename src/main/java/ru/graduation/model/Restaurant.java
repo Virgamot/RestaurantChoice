@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
-public class Restaurant extends BaseEntity {
+public class Restaurant extends AbstractBaseEntity {
 
     public static final String DELETE = "Restaurant.delete";
     public static final String GET_ALL = "Restaurant.getAll";

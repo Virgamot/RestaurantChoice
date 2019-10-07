@@ -15,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "dishes")
-public class Dish extends BaseEntity {
+public class Dish extends AbstractBaseEntity {
 
     public static final String DELETE = "Dish.delete";
     public static final String GET_ALL = "Dish.getAll";
