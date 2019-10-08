@@ -12,6 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,7 @@ public class User extends AbstractBaseEntity {
 
 
     @NotBlank
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     @SafeHtml
     private String name;
 
@@ -30,26 +31,26 @@ public class User extends AbstractBaseEntity {
     @SafeHtml
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     @NotBlank
-    @Length(min=5,max = 100)
+    @Length(min = 5, max = 100)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "enabled",nullable = false,columnDefinition = "bool default true")
-    private boolean enabled= true;
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
 
-    @Column(name="registered",columnDefinition = "timestamp default now()")
+    @Column(name = "registered", columnDefinition = "timestamp default now()")
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date registered=new Date();
+    private Date registered = new Date();
 
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @BatchSize(size=200)
+    @BatchSize(size = 200)
     private Set<Role> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,11 +58,15 @@ public class User extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    public User(String name, String email, String password, Set<Role> roles) {
+    public User() {
+    }
+
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        super(id);
         this.name = name;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.roles = EnumSet.of(role, roles);
     }
 
     public String getName() {
