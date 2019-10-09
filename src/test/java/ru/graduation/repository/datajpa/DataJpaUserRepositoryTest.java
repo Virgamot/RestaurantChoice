@@ -2,6 +2,7 @@ package ru.graduation.repository.datajpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.graduation.RestaurantTestData;
 import ru.graduation.model.Role;
 import ru.graduation.model.User;
 import ru.graduation.repository.AbstractRepositoryTest;
@@ -49,13 +50,12 @@ class DataJpaUserRepositoryTest extends AbstractRepositoryTest {
         assertMatch(users, USER, ADMIN);
     }
 
-    //TODO
     @Test
     void testGetWithRestaurant() throws Exception {
-        User created=new User(null, "New", "new@gmail.com", "new_password", Role.ROLE_USER);
+        User created = getCreated();
         created.setRestaurant(RESTAURANT_1);
         repository.save(created);
         User user = repository.getWithRestaurant(created.getId());
-        System.out.println(user.getRestaurant());
+        RestaurantTestData.assertMatch(user.getRestaurant(), RESTAURANT_1);
     }
 }
