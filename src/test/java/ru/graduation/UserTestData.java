@@ -1,12 +1,16 @@
 package ru.graduation;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.graduation.model.Role;
 import ru.graduation.model.User;
+import ru.graduation.web.json.JsonUtil;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.graduation.model.AbstractBaseEntity.START_SEQ;
+import static ru.graduation.web.json.JsonUtil.writeIgnoreProps;
 
 public class UserTestData {
     public static final int USER_ID = START_SEQ + 13;
@@ -29,6 +33,18 @@ public class UserTestData {
 
     private static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("registered", "restaurant", "password").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(User... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "registered"));
+    }
+
+    public static ResultMatcher contentJson(User expected) {
+        return content().json(writeIgnoreProps(expected, "registered"));
+    }
+
+    public static String jsonWithPassword(User user, String passw) {
+        return JsonUtil.writeAdditionProps(user, "password", passw);
     }
 
 }

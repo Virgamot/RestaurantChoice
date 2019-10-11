@@ -21,11 +21,15 @@ INSERT INTO DISHES (DESCRIPTION, PRICE, RESTAURANT_ID) VALUES
   ('Chicken chop', 2.5, 100001),
   ('Coffee', 1.2, 100001);
 
+/*
+{noop} is needed to avoid PasswordEncoder exception
+https://www.mkyong.com/spring-boot/spring-security-there-is-no-passwordencoder-mapped-for-the-id-null/
+ */
 INSERT INTO users (name, email, password, restaurant_id)
-VALUES ('User', 'user@yandex.ru', '$2a$10$Sh0ZD2NFrzRRJJEKEWn8l.92ROEuzlVyzB9SV1AM8fdluPR0aC1ni', NULL);
+VALUES ('User', 'user@yandex.ru', '{noop}password', NULL);
 
 INSERT INTO users (name, email, password, restaurant_id)
-VALUES ('Admin', 'admin@gmail.com', '$2a$10$WejOLxVuXRpOgr4IlzQJ.eT4UcukNqHlAiOVZj1P/nmc8WbpMkiju', NULL);
+VALUES ('Admin', 'admin@gmail.com', '{noop}admin', NULL);
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100013),
