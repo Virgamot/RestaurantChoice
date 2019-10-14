@@ -1,7 +1,9 @@
 package ru.graduation.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -9,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.graduation.RestaurantTestData;
 import ru.graduation.model.Role;
 import ru.graduation.model.User;
+import ru.graduation.repository.JpaUtil;
 import ru.graduation.util.exception.NotFoundException;
 
 import java.util.Collections;
@@ -27,6 +30,18 @@ class UserServiceTest {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
+    private JpaUtil jpaUtil;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        cacheManager.getCache("users").clear();
+        jpaUtil.clear2ndLevelHibernateCache();
+    }
 
     @Test
     void testCreate() throws Exception {

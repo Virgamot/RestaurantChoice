@@ -1,6 +1,8 @@
 package ru.graduation.web;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -8,6 +10,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import ru.graduation.repository.JpaUtil;
 import ru.graduation.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +37,12 @@ public abstract class AbstractControllerTest {
     protected MockMvc mockMvc;
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
+    private JpaUtil jpaUtil;
+
+    @Autowired
     protected UserService userService;
 
     @Autowired
@@ -46,5 +55,11 @@ public abstract class AbstractControllerTest {
                 addFilter(CHARACTER_ENCODING_FILTER).
                 apply(springSecurity()).
                 build();
+    }
+
+    @BeforeEach
+    void setUp() {
+        cacheManager.getCache("users").clear();
+        jpaUtil.clear2ndLevelHibernateCache();
     }
 }
