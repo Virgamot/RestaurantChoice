@@ -15,9 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.DishTestData.*;
-import static ru.graduation.TestUtil.contentJson;
-import static ru.graduation.TestUtil.contentJsonArray;
-import static ru.graduation.TestUtil.readFromJson;
+import static ru.graduation.TestUtil.*;
+import static ru.graduation.UserTestData.USER;
 
 
 class DishRestControllerTest extends AbstractControllerTest {
@@ -29,7 +28,8 @@ class DishRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGet() throws Exception {
-        mockMvc.perform(get(REST_URL + DISH1_ID))
+        mockMvc.perform(get(REST_URL + DISH1_ID)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -38,7 +38,8 @@ class DishRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGetAll() throws Exception {
-        mockMvc.perform(get(REST_URL))
+        mockMvc.perform(get(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -52,6 +53,7 @@ class DishRestControllerTest extends AbstractControllerTest {
         Dish created = DishTestData.getCreated();
 
         ResultActions action = mockMvc.perform(post(REST_URL)
+                .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(created)))
                 .andExpect(status().isOk());
@@ -66,7 +68,8 @@ class DishRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional
     void testDelete() throws Exception {
-        mockMvc.perform(delete(REST_URL + DISH1_ID))
+        mockMvc.perform(delete(REST_URL + DISH1_ID)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk());
         assertMatch(repository.getAll(), DISH_2, DISH_3, DISH_4, DISH_5, DISH_6, DISH_7, DISH_8, DISH_9, DISH_10, DISH_11);
     }
