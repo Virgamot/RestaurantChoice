@@ -11,5 +11,13 @@ public interface RestaurantRepository {
 
     Restaurant get(int id);
 
+    Restaurant getReference(int id);
+
     List<Restaurant> getAll();
+
+    void increaseRating(int id);
+
+    void decreaseRating(int id);
+
+    Restaurant getWithDishes(int id);
 }

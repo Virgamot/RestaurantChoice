@@ -9,6 +9,7 @@ import ru.graduation.repository.RestaurantRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.graduation.RestaurantTestData.*;
 
 class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
@@ -17,29 +18,26 @@ class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
     private RestaurantRepository repository;
 
     @Test
-    void save() {
+    void testVoteFor() throws Exception {
+        repository.increaseRating(RESTAURANT1_ID);
+        assertThat(repository.get(RESTAURANT1_ID).getRating() == 1);
+    }
+
+    @Test
+    void testVoteAgainst() throws Exception {
         Restaurant created = getCreated();
-        repository.save(created);
-        assertMatch(repository.getAll(), RESTAURANT_1, RESTAURANT_2, created);
+        created.setRating(11);
+        Restaurant returned = repository.save(created);
+        int returnedId = returned.getId();
+        repository.decreaseRating(returnedId);
+        assertThat(repository.get(returnedId).getRating() == 10);
     }
 
     @Test
-    void delete() {
-        List<Restaurant> listWithDeleted = new ArrayList<>(RESTAURANTS);
-        repository.delete(RESTAURANT1_ID);
-        listWithDeleted.remove(RESTAURANT_1);
-        assertMatch(repository.getAll(), listWithDeleted);
+    void testGetReference() throws Exception {
+        Restaurant restaurantRef = repository.getReference(RESTAURANT2_ID);
+        assertThat(restaurantRef.getId()==RESTAURANT2_ID);
     }
 
-    @Test
-    void get() {
-        Restaurant restaurant = repository.get(RESTAURANT1_ID);
-        assertMatch(restaurant, RESTAURANT_1);
-    }
 
-    @Test
-    void getAll() {
-        List<Restaurant> restaurants = repository.getAll();
-        assertMatch(restaurants, RESTAURANTS);
-    }
 }

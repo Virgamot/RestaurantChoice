@@ -65,4 +65,8 @@ public class Dish extends AbstractBaseEntity {
     public Restaurant getRestaurant() {
         return restaurant;
     }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

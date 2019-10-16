@@ -34,7 +34,27 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
+    public Restaurant getReference(int id) {
+        return repository.getOne(id);
+    }
+
+    @Override
     public List<Restaurant> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public void increaseRating(int id) {
+        repository.increaseRating(id);
+    }
+
+    @Override
+    public void decreaseRating(int id) {
+        repository.decreaseRating(id);
+    }
+
+    @Override
+    public Restaurant getWithDishes(int id) {
+        return repository.getWithDishes(id);
     }
 }
