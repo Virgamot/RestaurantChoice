@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -37,14 +38,35 @@ public class Restaurant extends AbstractBaseEntity {
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String address, Dish... dishes) {
+    public Restaurant(Restaurant r) {
+        this(r.getId(), r.getAddress(), r.getRating(), r.getDishes());
+    }
+
+    public Restaurant(Integer id, String address) {
+        super(id);
         this.address = address;
+    }
+
+    public Restaurant(Integer id, String address, int rating, List<Dish> dishes) {
+        super(id);
+        this.address = address;
+        this.rating = rating;
+        setDishes(dishes);
+    }
+
+    public Restaurant(Integer id, String address, int rating, Dish... dishes) {
+        super(id);
+        this.address = address;
+        this.rating = rating;
         this.dishes = Arrays.asList(dishes);
-        this.setId(id);
     }
 
     public String getAddress() {
         return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<Dish> getDishes() {

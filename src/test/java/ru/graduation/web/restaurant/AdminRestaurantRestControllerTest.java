@@ -1,0 +1,84 @@
+package ru.graduation.web.restaurant;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
+import ru.graduation.model.Restaurant;
+import ru.graduation.web.AbstractControllerTest;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.graduation.RestaurantTestData.*;
+import static ru.graduation.TestUtil.readFromJson;
+import static ru.graduation.TestUtil.userHttpBasic;
+import static ru.graduation.UserTestData.ADMIN;
+import static ru.graduation.web.json.JsonUtil.writeValue;
+
+class AdminRestaurantRestControllerTest extends AbstractControllerTest {
+
+    private static final String REST_URL = AdminRestaurantRestController.REST_URL + "/";
+
+    @Test
+    void testGet() throws Exception {
+        mockMvc.perform(get(REST_URL + RESTAURANT1_ID)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(RESTAURANT_1));
+    }
+
+    @Test
+    void testGetAll() throws Exception {
+        mockMvc.perform(get(REST_URL)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(RESTAURANT_1, RESTAURANT_2));
+    }
+
+    @Test
+    void testCreate() throws Exception {
+        Restaurant created = getCreated();
+
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .with(userHttpBasic(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(created)))
+                .andExpect(status().isCreated());
+
+        Restaurant returned = readFromJson(action, Restaurant.class);
+        created.setId(returned.getId());
+
+        assertMatch(returned, created);
+        assertMatch(restaurantService.getAll(), RESTAURANT_1, RESTAURANT_2, created);
+    }
+
+    @Test
+    void testUpdate() throws Exception {
+        Restaurant updated = new Restaurant(RESTAURANT_1);
+        updated.setAddress("Updated address");
+
+        mockMvc.perform(put(REST_URL)
+                .with(userHttpBasic(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertMatch(restaurantService.get(RESTAURANT1_ID), updated);
+    }
+
+    @Test
+    void testDelete() throws Exception {
+        mockMvc.perform(delete(REST_URL + RESTAURANT1_ID)
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertMatch(restaurantService.getAll(), RESTAURANT_2);
+    }
+}

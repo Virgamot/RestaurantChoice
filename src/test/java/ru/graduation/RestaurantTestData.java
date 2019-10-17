@@ -1,12 +1,15 @@
 package ru.graduation;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.graduation.model.Restaurant;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.graduation.model.AbstractBaseEntity.START_SEQ;
+import static ru.graduation.web.json.JsonUtil.writeIgnoreProps;
 
 public class RestaurantTestData {
 
@@ -23,7 +26,7 @@ public class RestaurantTestData {
     }
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "dishes","rating");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "dishes", "rating");
     }
 
     public static void assertMatch(Iterable<Restaurant> actual, Restaurant... excpected) {
@@ -32,5 +35,13 @@ public class RestaurantTestData {
 
     public static void assertMatch(Iterable<Restaurant> actual, Iterable<Restaurant> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("dishes").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(Restaurant expected) {
+        return content().json(writeIgnoreProps(expected, "dishes"));
+    }
+
+    public static ResultMatcher contentJson(Restaurant... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "dishes"));
     }
 }

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.graduation.DishTestData.*;
 import static ru.graduation.RestaurantTestData.*;
 import static ru.graduation.UserTestData.ADMIN_ID;
@@ -64,7 +65,7 @@ class RestaurantServiceTest {
     @Test
     void testGetWithDishes() throws Exception {
         Restaurant restaurant = restaurantService.getWithDishes(RESTAURANT1_ID);
-        DishTestData.assertMatch(restaurant.getDishes(),Arrays.asList(DISH_1,DISH_2,DISH_3,DISH_4,DISH_5,DISH_6));
+        DishTestData.assertMatch(restaurant.getDishes(), Arrays.asList(DISH_1, DISH_2, DISH_3, DISH_4, DISH_5, DISH_6));
     }
 
     @Test
@@ -89,6 +90,25 @@ class RestaurantServiceTest {
 
         User user = userService.getWithRestaurant(USER_ID);
         assertMatch(user.getRestaurant(), RESTAURANT_2);
+    }
+
+    @Test
+    void testCancelChoice() throws Exception {
+        restaurantService.voteFor(RESTAURANT2_ID, USER_ID);
+        restaurantService.cancelChoice(RESTAURANT2_ID, USER_ID);
+
+        Restaurant restaurant = restaurantService.get(RESTAURANT2_ID);
+        assertThat(restaurant.getRating() == 0);
+
+        User user = userService.getWithRestaurant(USER_ID);
+        assertThat(user.getRestaurant() == null);
+    }
+
+    @Test
+    void testInvalidCancelChoice() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> {
+            restaurantService.cancelChoice(RESTAURANT2_ID, USER_ID);
+        });
     }
 
 

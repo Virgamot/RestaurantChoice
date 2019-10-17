@@ -25,8 +25,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     //TODO
     @Override
-    public void delete(int id, int userId) {
-        restaurantRepository.delete(id);
+    public void delete(int restaurantId, int userId) {
+        restaurantRepository.delete(restaurantId);
     }
 
     @Override
@@ -58,6 +58,20 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantRepository.increaseRating(restaurantId);
 
         user.setRestaurant(restaurantRepository.getReference(restaurantId));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void cancelChoice(int restaurantId, int userId) {
+
+        User user = userRepository.getWithRestaurant(userId);
+
+        if (user.getRestaurant()==null||user.getRestaurant().getId() != restaurantId) {
+            //TODO custom exception
+            throw new IllegalArgumentException();
+        }
+        restaurantRepository.decreaseRating(restaurantId);
+        user.setRestaurant(null);
         userRepository.save(user);
     }
 

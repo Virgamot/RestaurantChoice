@@ -18,4 +18,6 @@ public interface RestaurantService {
     Restaurant getWithDishes(int id);
 
     void voteFor(int restaurantId, int userId);
+
+    void cancelChoice(int restaurantId, int userId);
 }
