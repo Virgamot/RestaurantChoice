@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.DishTestData;
 import ru.graduation.model.Dish;
 import ru.graduation.repository.DishRepository;
+import ru.graduation.to.DishTo;
 import ru.graduation.web.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -50,19 +51,17 @@ class DishRestControllerTest extends AbstractControllerTest {
     @Transactional
     void testCreate() throws Exception {
 
-        Dish created = DishTestData.getCreated();
+        DishTo createdTo = DishTestData.getCreatedTo();
 
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(created)))
+                .content(JsonUtil.writeValue(createdTo)))
                 .andExpect(status().isOk());
 
         Dish returned = readFromJson(action, Dish.class);
-        created.setId(returned.getId());
 
-        assertMatch(returned, created);
-        assertMatch(repository.getAll(), DISH_1, DISH_2, DISH_3, DISH_4, DISH_5, DISH_6, DISH_7, DISH_8, DISH_9, DISH_10, DISH_11, created);
+        assertMatch(repository.getAll(), DISH_1, DISH_2, DISH_3, DISH_4, DISH_5, DISH_6, DISH_7, DISH_8, DISH_9, DISH_10, DISH_11, returned);
     }
 
     @Test

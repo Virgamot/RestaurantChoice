@@ -19,7 +19,7 @@ class DataJpaDishRepositoryTest extends AbstractRepositoryTest {
     @Test
     void save() {
         Dish created = getCreated();
-        repository.save(created);
+        repository.save(created, created.getRestaurant().getId());
         assertMatch(repository.get(created.getId()), created);
     }
 

@@ -7,8 +7,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.graduation.model.Dish;
 import ru.graduation.repository.DishRepository;
+import ru.graduation.to.DishTo;
 
 import java.util.List;
+
+import static ru.graduation.util.DishUtil.getFromTo;
 
 @RestController
 @RequestMapping(value = DishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,9 +37,10 @@ public class DishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dish save(@RequestBody Dish dish) {
+    public Dish save(@RequestBody DishTo dishTo) {
+        Dish dish = getFromTo(dishTo);
         LOG.info("save {}", dish);
-        return repository.save(dish);
+        return repository.save(dish, dishTo.getRestaurantId());
     }
 
     @DeleteMapping("/{id}")

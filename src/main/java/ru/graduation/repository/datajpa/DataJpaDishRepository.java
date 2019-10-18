@@ -7,33 +7,36 @@ import ru.graduation.model.Dish;
 import ru.graduation.repository.DishRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class DataJpaDishRepository implements DishRepository {
 
     @Autowired
-    private CrudDishRepository repository;
+    private CrudDishRepository crudDishRepository;
+
+    @Autowired
+    private CrudRestaurantRepository crudRestaurantRepository;
 
     @Override
     @Transactional
-    public Dish save(Dish dish) {
-        return repository.save(dish);
+    public Dish save(Dish dish, int restaurantId) {
+        dish.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
+        return crudDishRepository.save(dish);
     }
 
     @Override
     @Transactional
     public boolean delete(int id) {
-        return repository.delete(id) != 0;
+        return crudDishRepository.delete(id) != 0;
     }
 
     @Override
     public Dish get(int id) {
-        return repository.findById(id).orElse(null);
+        return crudDishRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Dish> getAll() {
-        return repository.findAll();
+        return crudDishRepository.findAll();
     }
 }

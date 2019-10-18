@@ -1,6 +1,7 @@
 package ru.graduation.util;
 
 import ru.graduation.model.Dish;
+import ru.graduation.to.DishTo;
 
 import java.util.List;
 
@@ -13,4 +14,10 @@ public class DishUtil {
         });
         return sb.toString();
     }
+
+    public static Dish getFromTo(DishTo dishTo) {
+        return new Dish(dishTo.getId(),dishTo.getDescription(),dishTo.getPrice());
+    }
+
+
 }

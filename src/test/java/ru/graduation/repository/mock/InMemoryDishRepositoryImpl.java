@@ -23,7 +23,7 @@ public class InMemoryDishRepositoryImpl implements DishRepository {
     }
 
     @Override
-    public Dish save(Dish dish) {
+    public Dish save(Dish dish, int restaurantId) {
         if (dish.isNew()) {
             dish.setId(counter.incrementAndGet());
             repository.put(dish.getId(), dish);

@@ -1,11 +1,13 @@
 package ru.graduation;
 
 import ru.graduation.model.Dish;
+import ru.graduation.to.DishTo;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.graduation.RestaurantTestData.RESTAURANT2_ID;
 import static ru.graduation.RestaurantTestData.RESTAURANT_2;
 import static ru.graduation.model.AbstractBaseEntity.START_SEQ;
 
@@ -32,6 +34,10 @@ public class DishTestData {
 
     public static Dish getCreated() {
         return new Dish(null, RESTAURANT_2, "Created dish", 20d);
+    }
+
+    public static DishTo getCreatedTo() {
+        return new DishTo(null, "Created dish", 20d, RESTAURANT2_ID);
     }
 
     public static void assertMatch(Dish actual, Dish expected) {
