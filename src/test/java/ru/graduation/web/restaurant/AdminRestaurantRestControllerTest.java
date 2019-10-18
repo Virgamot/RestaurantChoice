@@ -3,6 +3,8 @@ package ru.graduation.web.restaurant;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import ru.graduation.DishTestData;
+import ru.graduation.RestaurantTestData;
 import ru.graduation.model.Restaurant;
 import ru.graduation.web.AbstractControllerTest;
 
@@ -10,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.graduation.DishTestData.*;
 import static ru.graduation.RestaurantTestData.*;
 import static ru.graduation.TestUtil.readFromJson;
 import static ru.graduation.TestUtil.userHttpBasic;
@@ -22,12 +25,16 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGet() throws Exception {
-        mockMvc.perform(get(REST_URL + RESTAURANT1_ID)
+        ResultActions action=mockMvc.perform(get(REST_URL + RESTAURANT1_ID)
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(RESTAURANT_1));
+
+        Restaurant returned=readFromJson(action,Restaurant.class);
+
+        DishTestData.assertMatch(returned.getDishes(),DISH_1,DISH_2,DISH_3,DISH_4,DISH_5,DISH_6);
     }
 
     @Test
@@ -42,7 +49,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testCreate() throws Exception {
-        Restaurant created = getCreated();
+        Restaurant created = RestaurantTestData.getCreated();
 
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .with(userHttpBasic(ADMIN))
@@ -62,14 +69,14 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         Restaurant updated = new Restaurant(RESTAURANT_1);
         updated.setAddress("Updated address");
 
-        mockMvc.perform(put(REST_URL)
+        mockMvc.perform(put(REST_URL + RESTAURANT1_ID)
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertMatch(restaurantService.get(RESTAURANT1_ID), updated);
+        assertMatch(restaurantService.getWithDishes(RESTAURANT1_ID), updated);
     }
 
     @Test

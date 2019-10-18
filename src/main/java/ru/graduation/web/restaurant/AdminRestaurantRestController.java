@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(AdminRestaurantRestController.REST_URL)
 public class AdminRestaurantRestController extends AbstractRestaurantController {
-    static final String REST_URL = "/rest/admin/restaurants/";
+    static final String REST_URL = "/rest/admin/restaurants";
 
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,9 +44,10 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
     }
 
     //TODO without id not RESTful?
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Restaurant restaurant, @AuthenticationPrincipal AuthorizedUser authorizedUser) {
+    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable("id") int restaurantId,
+                       @AuthenticationPrincipal AuthorizedUser authorizedUser) {
         super.update(restaurant, authorizedUser.getId());
     }
 

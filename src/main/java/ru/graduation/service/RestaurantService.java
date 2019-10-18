@@ -5,7 +5,6 @@ import ru.graduation.model.Restaurant;
 import java.util.List;
 
 public interface RestaurantService {
-    Restaurant get(int id);
 
     void delete(int id, int userId);
 
@@ -16,8 +15,4 @@ public interface RestaurantService {
     Restaurant save(Restaurant restaurant, int userId);
 
     Restaurant getWithDishes(int id);
-
-    void voteFor(int restaurantId, int userId);
-
-    void cancelChoice(int restaurantId, int userId);
 }

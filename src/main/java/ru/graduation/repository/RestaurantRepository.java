@@ -9,8 +9,6 @@ public interface RestaurantRepository {
 
     boolean delete(int id);
 
-    Restaurant get(int id);
-
     Restaurant getReference(int id);
 
     List<Restaurant> getAll();

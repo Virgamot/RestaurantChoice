@@ -31,10 +31,6 @@ class RestaurantServiceTest {
     @Autowired
     private RestaurantService restaurantService;
 
-    @Autowired
-    private UserService userService;
-
-
     @Test
     void testSave() throws Exception {
         Restaurant created = RestaurantTestData.getCreated();
@@ -51,12 +47,6 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void testGet() throws Exception {
-        Restaurant restaurant = restaurantService.get(RESTAURANT1_ID);
-        assertMatch(restaurant, RESTAURANT_1);
-    }
-
-    @Test
     void testGetAll() throws Exception {
         List<Restaurant> restaurants = restaurantService.getAll();
         assertMatch(restaurants, RESTAURANTS);
@@ -68,48 +58,48 @@ class RestaurantServiceTest {
         DishTestData.assertMatch(restaurant.getDishes(), Arrays.asList(DISH_1, DISH_2, DISH_3, DISH_4, DISH_5, DISH_6));
     }
 
-    @Test
-    void testVotingFor() throws Exception {
-        restaurantService.voteFor(RESTAURANT1_ID, USER_ID);
-        User user = userService.getWithRestaurant(USER_ID);
-        Restaurant restaurant = restaurantService.get(RESTAURANT1_ID);
-        assertThat(restaurant.getRating() == 1);
-        assertMatch(restaurant, RESTAURANT_1);
-    }
-
-    @Test
-    void testRevote() throws Exception {
-        restaurantService.voteFor(RESTAURANT1_ID, USER_ID);
-        restaurantService.voteFor(RESTAURANT2_ID, USER_ID);
-
-        Restaurant firstRestaurant = restaurantService.get(RESTAURANT1_ID);
-        assertThat(firstRestaurant.getRating() == 0);
-
-        Restaurant secondRestauran = restaurantService.get(RESTAURANT1_ID);
-        assertThat(secondRestauran.getRating() == 1);
-
-        User user = userService.getWithRestaurant(USER_ID);
-        assertMatch(user.getRestaurant(), RESTAURANT_2);
-    }
-
-    @Test
-    void testCancelChoice() throws Exception {
-        restaurantService.voteFor(RESTAURANT2_ID, USER_ID);
-        restaurantService.cancelChoice(RESTAURANT2_ID, USER_ID);
-
-        Restaurant restaurant = restaurantService.get(RESTAURANT2_ID);
-        assertThat(restaurant.getRating() == 0);
-
-        User user = userService.getWithRestaurant(USER_ID);
-        assertThat(user.getRestaurant() == null);
-    }
-
-    @Test
-    void testInvalidCancelChoice() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> {
-            restaurantService.cancelChoice(RESTAURANT2_ID, USER_ID);
-        });
-    }
+//    @Test
+//    void testVotingFor() throws Exception {
+//        restaurantService.voteFor(RESTAURANT1_ID, USER_ID);
+//        User user = userService.getWithRestaurant(USER_ID);
+//        Restaurant restaurant = restaurantService.get(RESTAURANT1_ID);
+//        assertThat(restaurant.getRating() == 1);
+//        assertMatch(restaurant, RESTAURANT_1);
+//    }
+//
+//    @Test
+//    void testRevote() throws Exception {
+//        restaurantService.voteFor(RESTAURANT1_ID, USER_ID);
+//        restaurantService.voteFor(RESTAURANT2_ID, USER_ID);
+//
+//        Restaurant firstRestaurant = restaurantService.get(RESTAURANT1_ID);
+//        assertThat(firstRestaurant.getRating() == 0);
+//
+//        Restaurant secondRestauran = restaurantService.get(RESTAURANT1_ID);
+//        assertThat(secondRestauran.getRating() == 1);
+//
+//        User user = userService.getWithRestaurant(USER_ID);
+//        assertMatch(user.getRestaurant(), RESTAURANT_2);
+//    }
+//
+//    @Test
+//    void testCancelChoice() throws Exception {
+//        restaurantService.voteFor(RESTAURANT2_ID, USER_ID);
+//        restaurantService.cancelChoice(RESTAURANT2_ID, USER_ID);
+//
+//        Restaurant restaurant = restaurantService.get(RESTAURANT2_ID);
+//        assertThat(restaurant.getRating() == 0);
+//
+//        User user = userService.getWithRestaurant(USER_ID);
+//        assertThat(user.getRestaurant() == null);
+//    }
+//
+//    @Test
+//    void testInvalidCancelChoice() throws Exception {
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            restaurantService.cancelChoice(RESTAURANT2_ID, USER_ID);
+//        });
+//    }
 
 
 }

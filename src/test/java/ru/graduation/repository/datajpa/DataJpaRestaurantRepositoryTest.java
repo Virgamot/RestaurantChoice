@@ -20,7 +20,7 @@ class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
     @Test
     void testVoteFor() throws Exception {
         repository.increaseRating(RESTAURANT1_ID);
-        assertThat(repository.get(RESTAURANT1_ID).getRating() == 1);
+        assertThat(repository.getWithDishes(RESTAURANT1_ID).getRating() == 1);
     }
 
     @Test
@@ -30,7 +30,7 @@ class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
         Restaurant returned = repository.save(created);
         int returnedId = returned.getId();
         repository.decreaseRating(returnedId);
-        assertThat(repository.get(returnedId).getRating() == 10);
+        assertThat(repository.getWithDishes(returnedId).getRating() == 10);
     }
 
     @Test

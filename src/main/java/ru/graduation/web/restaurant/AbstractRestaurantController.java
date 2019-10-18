@@ -21,7 +21,7 @@ public class AbstractRestaurantController {
 
     public Restaurant get(int id) {
         LOG.info("get restaurant with id={}", id);
-        return service.get(id);
+        return service.getWithDishes(id);
     }
 
     public Restaurant save(Restaurant restaurant, int userId) {
@@ -38,20 +38,4 @@ public class AbstractRestaurantController {
         LOG.info("delete restaurant with id={} by user, with id={}", restaurantId, userId);
         service.delete(restaurantId, userId);
     }
-
-    public Restaurant getWithDishes(int restaurantId, int userId) {
-        LOG.info("get with dishes, restaurant id={}", restaurantId);
-        return service.getWithDishes(restaurantId);
-    }
-
-    public void voteFor(int restaurantId, int userId) {
-        LOG.info("user with id={}, voted for restaurant={}", userId, restaurantId);
-        service.voteFor(restaurantId, userId);
-    }
-
-    public void cancelChoice(int reststaurantId, int userId) {
-        LOG.info("user with id={} cancel his vote for restaurant={}", userId, reststaurantId);
-        service.cancelChoice(reststaurantId, userId);
-    }
-
 }
