@@ -1,5 +1,6 @@
 package ru.graduation.web.restaurant;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -87,5 +88,29 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         assertMatch(restaurantService.getAll(), RESTAURANT_2);
+    }
+
+    //TODO
+    @Test
+    @Disabled
+    void testCreateInvalid() throws Exception {
+    }
+
+    //TODO
+    @Test
+    @Disabled
+    void testCreateDuplicate() throws Exception {
+    }
+
+    //TODO
+    @Test
+    @Disabled
+    void testUpdateInvalid() throws Exception {
+    }
+
+    //TODO
+    @Test
+    @Disabled
+    void testUpdateDuplicate() throws Exception {
     }
 }

@@ -43,7 +43,10 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    //TODO without id not RESTful?
+    /*
+        TODO without id not RESTful?
+        something like id-consistent?
+     */
     @PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable("id") int restaurantId,
