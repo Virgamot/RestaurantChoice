@@ -1,11 +1,17 @@
 package ru.graduation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
 import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.repository.UserRepository;
 
+import java.time.LocalTime;
+
+import static ru.graduation.util.TimeUtil.checkTime;
+
+@Service("voteService")
 public class VoteServiceImpl implements VoteService {
 
     @Autowired
@@ -15,12 +21,17 @@ public class VoteServiceImpl implements VoteService {
     private RestaurantRepository restaurantRepository;
 
     @Override
-    public void voteFor(int restaurantId, int userId) {
-        User user = userRepository.getWithRestaurant(userId);
-        Restaurant userRestaurant = user.getRestaurant();
-        if (userRestaurant != null) {
+    public void voteFor(int restaurantId, int userId, LocalTime currentTime) {
+        User user = userRepository.get(userId);
+        /*
+        Getting proxy here, not restaurant object
+         */
+        Restaurant userRestaurantRef = user.getRestaurant();
+
+        if (userRestaurantRef != null) {
             //TODO time-check
-            restaurantRepository.decreaseRating(userRestaurant.getId());
+            checkTime(currentTime);
+            restaurantRepository.decreaseRating(userRestaurantRef.getId());
         }
 
         restaurantRepository.increaseRating(restaurantId);
@@ -30,7 +41,10 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public void cancelChoice(int restaurantId, int userId) {
+    public void cancelChoice(int restaurantId, int userId, LocalTime currentTime) {
+
+        checkTime(currentTime);
+
         User user = userRepository.getWithRestaurant(userId);
 
         if (user.getRestaurant() == null || user.getRestaurant().getId() != restaurantId) {
