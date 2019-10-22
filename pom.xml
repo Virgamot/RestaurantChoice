@@ -33,6 +33,7 @@
         <!--Hibernate-->
         <hibernate.version>5.4.2.Final</hibernate.version>
         <hibernate-validator.version>6.0.17.Final</hibernate-validator.version>
+        <jsoup.version>1.11.3</jsoup.version>
 
         <!--Tools-->
         <ehcache.version>3.5.2</ehcache.version>
@@ -193,6 +194,12 @@
             <artifactId>javax.el-api</artifactId>
             <version>2.2.5</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
 
         <!--Cache-tools-->

@@ -20,6 +20,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public Restaurant get(int id) {
+        return restaurantRepository.get(id);
+    }
+
+    @Override
     public List<Restaurant> getAll() {
         return restaurantRepository.getAll();
     }

@@ -39,7 +39,7 @@ class VoteServiceImplTest {
     void testVoteFor() throws Exception {
         voteService.voteFor(RESTAURANT1_ID, USER_ID, mockTime);
         User user = userRepository.get(USER_ID);
-        Restaurant restaurant = restaurantRepository.getWithDishes(RESTAURANT1_ID);
+        Restaurant restaurant = restaurantRepository.get(RESTAURANT1_ID);
         assertThat(restaurant.getRating() == 1);
         assertThat(user.getRestaurant().getId() == RESTAURANT1_ID);
     }
@@ -49,11 +49,11 @@ class VoteServiceImplTest {
         voteService.voteFor(RESTAURANT2_ID, USER_ID, mockTime);
         voteService.cancelChoice(RESTAURANT2_ID, USER_ID, mockTime);
 
-        Restaurant restaurant = restaurantRepository.getWithDishes(RESTAURANT2_ID);
-        assertThat(restaurant.getRating() == 0);
+        Restaurant restaurant = restaurantRepository.get(RESTAURANT2_ID);
+        assertEquals(0, restaurant.getRating());
 
         User user = userRepository.getWithRestaurant(USER_ID);
-        assertThat(user.getRestaurant() == null);
+        assertNull(user.getRestaurant());
     }
 
     @Test
@@ -61,10 +61,10 @@ class VoteServiceImplTest {
         voteService.voteFor(RESTAURANT1_ID, USER_ID, mockTime);
         voteService.voteFor(RESTAURANT2_ID, USER_ID, mockTime);
 
-        Restaurant firstRestaurant = restaurantRepository.getWithDishes(RESTAURANT1_ID);
+        Restaurant firstRestaurant = restaurantRepository.get(RESTAURANT1_ID);
         assertThat(firstRestaurant.getRating() == 0);
 
-        Restaurant secondRestauran = restaurantRepository.getWithDishes(RESTAURANT1_ID);
+        Restaurant secondRestauran = restaurantRepository.get(RESTAURANT1_ID);
         assertThat(secondRestauran.getRating() == 1);
 
         User user = userRepository.getWithRestaurant(USER_ID);

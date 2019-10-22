@@ -47,6 +47,12 @@ class RestaurantServiceTest {
     }
 
     @Test
+    void testGet() throws Exception{
+        Restaurant restaurant=restaurantService.get(RESTAURANT1_ID);
+        assertMatch(restaurant,RESTAURANT_1);
+    }
+
+    @Test
     void testGetAll() throws Exception {
         List<Restaurant> restaurants = restaurantService.getAll();
         assertMatch(restaurants, RESTAURANTS);

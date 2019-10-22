@@ -17,5 +17,7 @@ public interface RestaurantRepository {
 
     void decreaseRating(int id);
 
+    Restaurant get(int id);
+
     Restaurant getWithDishes(int id);
 }

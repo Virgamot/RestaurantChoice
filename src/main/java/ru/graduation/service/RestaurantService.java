@@ -14,5 +14,7 @@ public interface RestaurantService {
 
     Restaurant save(Restaurant restaurant, int userId);
 
+    Restaurant get(int id);
+
     Restaurant getWithDishes(int id);
 }
