@@ -22,16 +22,13 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void voteFor(int restaurantId, int userId, LocalTime currentTime) {
-        User user = userRepository.get(userId);
-        /*
-        Getting proxy here, not restaurant object
-         */
-        Restaurant userRestaurantRef = user.getRestaurant();
+        User user = userRepository.getWithRestaurant(userId);
 
-        if (userRestaurantRef != null) {
-            //TODO time-check
+        Restaurant restaurant = user.getRestaurant();
+
+        if (restaurant != null) {
             checkTime(currentTime);
-            restaurantRepository.decreaseRating(userRestaurantRef.getId());
+            restaurantRepository.decreaseRating(restaurant.getId());
         }
 
         restaurantRepository.increaseRating(restaurantId);
@@ -42,10 +39,9 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void cancelChoice(int restaurantId, int userId, LocalTime currentTime) {
-
         checkTime(currentTime);
 
-        User user = userRepository.getWithRestaurant(userId);
+        User user = userRepository.get(userId);
 
         if (user.getRestaurant() == null || user.getRestaurant().getId() != restaurantId) {
             //TODO custom exception

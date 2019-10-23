@@ -25,6 +25,7 @@ public class DataJpaDishRepository implements DishRepository {
     }
 
     @Override
+    //TODO is needed?
     @Transactional
     public boolean delete(int id) {
         return crudDishRepository.delete(id) != 0;

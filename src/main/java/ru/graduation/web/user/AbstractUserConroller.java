@@ -26,7 +26,7 @@ public abstract class AbstractUserConroller {
 
     public User get(int id) {
         LOG.info("get {}", id);
-        return service.get(id);
+        return service.getWithRestaurant(id);
     }
 
     public User create(User user) {

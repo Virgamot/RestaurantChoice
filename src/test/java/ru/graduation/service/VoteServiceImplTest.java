@@ -1,7 +1,9 @@
 package ru.graduation.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -40,8 +42,8 @@ class VoteServiceImplTest {
         voteService.voteFor(RESTAURANT1_ID, USER_ID, mockTime);
         User user = userRepository.get(USER_ID);
         Restaurant restaurant = restaurantRepository.get(RESTAURANT1_ID);
-        assertThat(restaurant.getRating() == 1);
-        assertThat(user.getRestaurant().getId() == RESTAURANT1_ID);
+        assertEquals(1, restaurant.getRating());
+        assertEquals(RESTAURANT1_ID, (int) user.getRestaurant().getId());
     }
 
     @Test
@@ -59,13 +61,14 @@ class VoteServiceImplTest {
     @Test
     void testRevote() throws Exception {
         voteService.voteFor(RESTAURANT1_ID, USER_ID, mockTime);
+
         voteService.voteFor(RESTAURANT2_ID, USER_ID, mockTime);
 
         Restaurant firstRestaurant = restaurantRepository.get(RESTAURANT1_ID);
-        assertThat(firstRestaurant.getRating() == 0);
+        assertEquals(0, firstRestaurant.getRating());
 
-        Restaurant secondRestauran = restaurantRepository.get(RESTAURANT1_ID);
-        assertThat(secondRestauran.getRating() == 1);
+        Restaurant secondRestaurant = restaurantRepository.get(RESTAURANT2_ID);
+        assertEquals(1, secondRestaurant.getRating());
 
         User user = userRepository.getWithRestaurant(USER_ID);
         assertMatch(user.getRestaurant(), RESTAURANT_2);

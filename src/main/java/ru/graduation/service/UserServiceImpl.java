@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         checkNotFoundWithId(repository.save(prepareToSave(user, passwordEncoder)), user.getId());
     }
 
-
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     @Transactional
     public void update(UserTo userTo) {
@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.getAll();
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     @Override
     public void enable(int id, boolean enabled) {
