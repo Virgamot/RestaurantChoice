@@ -16,5 +16,9 @@ public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
     int delete(@Param("id") int id);
 
     @Override
+    @Transactional
     Dish save(Dish dish);
+
+    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.restaurant WHERE d.id=:id")
+    Dish getWithRestaurant(@Param("id") int id);
 }

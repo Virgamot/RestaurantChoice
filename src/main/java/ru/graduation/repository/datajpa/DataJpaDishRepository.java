@@ -18,22 +18,19 @@ public class DataJpaDishRepository implements DishRepository {
     private CrudRestaurantRepository crudRestaurantRepository;
 
     @Override
-    @Transactional
     public Dish save(Dish dish, int restaurantId) {
         dish.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
         return crudDishRepository.save(dish);
     }
 
     @Override
-    //TODO is needed?
-    @Transactional
     public boolean delete(int id) {
         return crudDishRepository.delete(id) != 0;
     }
 
     @Override
     public Dish get(int id) {
-        return crudDishRepository.findById(id).orElse(null);
+        return crudDishRepository.getWithRestaurant(id);
     }
 
     @Override

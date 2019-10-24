@@ -21,7 +21,6 @@ public interface CrudUserRepository extends JpaRepository<User,Integer> {
     List<User> findAll(Sort sort);
 
     @Transactional
-    //@Modifying
     @Override
     User save(User user);
 

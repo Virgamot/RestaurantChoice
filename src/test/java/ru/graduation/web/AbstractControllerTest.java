@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import ru.graduation.repository.DishRepository;
 import ru.graduation.repository.JpaUtil;
 import ru.graduation.service.RestaurantService;
 import ru.graduation.service.UserService;
@@ -48,6 +49,9 @@ public abstract class AbstractControllerTest {
 
     @Autowired
     protected RestaurantService restaurantService;
+
+    @Autowired
+    protected DishRepository dishRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;

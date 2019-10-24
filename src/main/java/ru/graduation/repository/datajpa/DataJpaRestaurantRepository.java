@@ -17,13 +17,11 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     private CrudRestaurantRepository repository;
 
     @Override
-    @Transactional
     public Restaurant save(Restaurant restaurant) {
         return repository.save(restaurant);
     }
 
     @Override
-    @Transactional
     public boolean delete(int id) {
         return repository.delete(id) != 0;
     }

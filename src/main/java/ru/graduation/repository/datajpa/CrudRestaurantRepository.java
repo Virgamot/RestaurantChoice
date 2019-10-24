@@ -18,6 +18,7 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     int delete(@Param("id") int id);
 
     @Override
+    @Transactional
     Restaurant save(Restaurant restaurant);
 
     @Modifying
