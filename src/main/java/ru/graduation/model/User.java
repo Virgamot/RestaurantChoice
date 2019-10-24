@@ -22,7 +22,6 @@ import java.util.*;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "user_unique_email_idx")})
 public class User extends AbstractBaseEntity {
 
-
     @NotBlank
     @Column(name = "name", nullable = false)
     @SafeHtml

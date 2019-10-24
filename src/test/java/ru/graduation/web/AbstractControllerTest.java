@@ -6,6 +6,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -14,10 +15,12 @@ import ru.graduation.repository.DishRepository;
 import ru.graduation.repository.JpaUtil;
 import ru.graduation.service.RestaurantService;
 import ru.graduation.service.UserService;
+import ru.graduation.util.exception.ErrorType;
 
 import javax.annotation.PostConstruct;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -56,6 +59,9 @@ public abstract class AbstractControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    protected MessageUtil messageUtil;
+
     @PostConstruct
     private void postConstruct() {
         mockMvc = MockMvcBuilders.
@@ -69,5 +75,17 @@ public abstract class AbstractControllerTest {
     void setUp() {
         cacheManager.getCache("users").clear();
         jpaUtil.clear2ndLevelHibernateCache();
+    }
+
+    protected String getMessage(String code) {
+        return messageUtil.getMessage(code, MessageUtil.RU_LOCALE);
+    }
+
+    public ResultMatcher errorType(ErrorType type) {
+        return jsonPath("$.type").value(type.name());
+    }
+
+    public ResultMatcher jsonMessage(String path, String code) {
+        return jsonPath(path).value(getMessage(code));
     }
 }

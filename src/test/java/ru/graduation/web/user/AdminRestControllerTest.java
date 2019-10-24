@@ -4,10 +4,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.TestUtil;
 import ru.graduation.model.Role;
 import ru.graduation.model.User;
+import ru.graduation.util.exception.ErrorType;
 import ru.graduation.web.AbstractControllerTest;
+import ru.graduation.web.json.JsonUtil;
 
 import java.util.Collections;
 
@@ -19,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.graduation.TestUtil.readFromJson;
 import static ru.graduation.TestUtil.userHttpBasic;
 import static ru.graduation.UserTestData.*;
+import static ru.graduation.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
 
 class AdminRestControllerTest extends AbstractControllerTest {
@@ -35,8 +40,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(contentJson(ADMIN));
     }
 
-    //TODO
-    @Disabled
     @Test
     void testGetNotFound() throws Exception {
         mockMvc.perform(get(REST_URL + 1)
@@ -64,8 +67,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
         assertMatch(userService.getAll(), ADMIN);
     }
 
-    //TODO
-    @Disabled
+
     @Test
     void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL + 1)
@@ -146,12 +148,30 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     @Disabled
     void testCreateInvalid() throws Exception {
+        User invalidUser = new User(null, "", "", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                //.content(JsonUtil.writeValue(invalidUser)))
+                .content(jsonWithPassword(invalidUser,"newPass")))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andDo(print());
     }
 
-    //TODO
+
     @Test
-    @Disabled
+    @Transactional(propagation = Propagation.NEVER)
     void testCreateDuplicate() throws Exception {
+        User invalidUser = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(invalidUser, "newPass")))
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
+                .andDo(print());
     }
 
     //TODO
@@ -160,10 +180,20 @@ class AdminRestControllerTest extends AbstractControllerTest {
     void testUpdateInvalid() throws Exception {
     }
 
-    //TODO
+
     @Test
-    @Disabled
+    @Transactional(propagation = Propagation.NEVER)
     void testUpdateDuplicate() throws Exception {
+        User updated = new User(USER);
+        updated.setEmail("admin@gmail.com");
+        mockMvc.perform(put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(updated, "password")))
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
+                .andDo(print());
     }
 
 }

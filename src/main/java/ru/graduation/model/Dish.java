@@ -1,13 +1,12 @@
 package ru.graduation.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
@@ -35,7 +34,7 @@ public class Dish extends AbstractBaseEntity {
     private String description;
 
     @Column(name = "price", nullable = false)
-    @NotEmpty
+    @Positive
     private Double price;
 
     public Dish() {

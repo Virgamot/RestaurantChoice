@@ -3,6 +3,7 @@ package ru.graduation.web.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.model.User;
@@ -62,7 +63,7 @@ public class AdminRestController extends AbstractUserConroller {
     @Override
     @PostMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void enable(@PathVariable("id") int id,@RequestParam("enabled") boolean enabled) {
+    public void enable(@PathVariable("id") int id, @RequestParam("enabled") boolean enabled) {
         super.enable(id, enabled);
     }
 }
