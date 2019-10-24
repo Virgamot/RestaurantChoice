@@ -1,9 +1,7 @@
 package ru.graduation.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -14,7 +12,6 @@ import ru.graduation.repository.UserRepository;
 
 import java.time.LocalTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.graduation.RestaurantTestData.*;
 import static ru.graduation.UserTestData.USER_ID;
@@ -24,7 +21,7 @@ import static ru.graduation.UserTestData.USER_ID;
         "classpath:spring/spring-db.xml"
 })
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-class VoteServiceImplTest {
+class VoteServiceTest {
 
     @Autowired
     private VoteService voteService;

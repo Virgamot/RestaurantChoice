@@ -6,10 +6,7 @@ import ru.graduation.model.Restaurant;
 import ru.graduation.repository.AbstractRepositoryTest;
 import ru.graduation.repository.RestaurantRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.graduation.RestaurantTestData.*;
 
 class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
@@ -20,7 +17,7 @@ class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
     @Test
     void testVoteFor() throws Exception {
         repository.increaseRating(RESTAURANT1_ID);
-        assertThat(repository.getWithDishes(RESTAURANT1_ID).getRating() == 1);
+        assertEquals(1, repository.getWithDishes(RESTAURANT1_ID).getRating());
     }
 
     @Test
@@ -30,13 +27,13 @@ class DataJpaRestaurantRepositoryTest extends AbstractRepositoryTest {
         Restaurant returned = repository.save(created);
         int returnedId = returned.getId();
         repository.decreaseRating(returnedId);
-        assertThat(repository.getWithDishes(returnedId).getRating() == 10);
+        assertEquals(10, repository.getWithDishes(returnedId).getRating());
     }
 
     @Test
     void testGetReference() throws Exception {
         Restaurant restaurantRef = repository.getReference(RESTAURANT2_ID);
-        assertThat(restaurantRef.getId()==RESTAURANT2_ID);
+        assertEquals((int) restaurantRef.getId(), RESTAURANT2_ID);
     }
 
 

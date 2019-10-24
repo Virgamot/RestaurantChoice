@@ -8,18 +8,14 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.graduation.DishTestData;
 import ru.graduation.RestaurantTestData;
 import ru.graduation.model.Restaurant;
-import ru.graduation.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.graduation.DishTestData.*;
 import static ru.graduation.RestaurantTestData.*;
 import static ru.graduation.UserTestData.ADMIN_ID;
-import static ru.graduation.UserTestData.USER_ID;
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
