@@ -1,6 +1,5 @@
 package ru.graduation.web.user;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -11,7 +10,6 @@ import ru.graduation.model.Role;
 import ru.graduation.model.User;
 import ru.graduation.util.exception.ErrorType;
 import ru.graduation.web.AbstractControllerTest;
-import ru.graduation.web.json.JsonUtil;
 
 import java.util.Collections;
 
@@ -144,16 +142,40 @@ class AdminRestControllerTest extends AbstractControllerTest {
         assertFalse(userService.get(USER_ID).isEnabled());
     }
 
-    //TODO
     @Test
-    @Disabled
     void testCreateInvalid() throws Exception {
-        User invalidUser = new User(null, "", "", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        User incorrectUser = new User(null, "", "", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
-                //.content(JsonUtil.writeValue(invalidUser)))
-                .content(jsonWithPassword(invalidUser,"newPass")))
+                .content(jsonWithPassword(incorrectUser, "newPass")))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andDo(print());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void testCreateDuplicate() throws Exception {
+        User incorrectUser = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(incorrectUser, "newPass")))
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
+                .andDo(print());
+    }
+
+    @Test
+    void testUpdateInvalid() throws Exception {
+        User incorrectUser = new User(USER);
+        incorrectUser.setName("");
+        mockMvc.perform(put(REST_URL+USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(jsonWithPassword(incorrectUser, "password")))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(ErrorType.VALIDATION_ERROR))
                 .andDo(print());
@@ -162,34 +184,13 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
-    void testCreateDuplicate() throws Exception {
-        User invalidUser = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
-        mockMvc.perform(post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(userHttpBasic(ADMIN))
-                .content(jsonWithPassword(invalidUser, "newPass")))
-                .andExpect(status().isConflict())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
-                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
-                .andDo(print());
-    }
-
-    //TODO
-    @Test
-    @Disabled
-    void testUpdateInvalid() throws Exception {
-    }
-
-
-    @Test
-    @Transactional(propagation = Propagation.NEVER)
     void testUpdateDuplicate() throws Exception {
-        User updated = new User(USER);
-        updated.setEmail("admin@gmail.com");
+        User incorrectUpdated = new User(USER);
+        incorrectUpdated.setEmail("admin@gmail.com");
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
-                .content(jsonWithPassword(updated, "password")))
+                .content(jsonWithPassword(incorrectUpdated, "password")))
                 .andExpect(status().isConflict())
                 .andExpect(errorType(ErrorType.VALIDATION_ERROR))
                 .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))

@@ -21,6 +21,7 @@ import ru.graduation.util.ValidationUtil;
 import ru.graduation.util.exception.ApplicationException;
 import ru.graduation.util.exception.ErrorInfo;
 import ru.graduation.util.exception.ErrorType;
+import ru.graduation.util.exception.IllegalRequestDataException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,6 +58,24 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }
 
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) //422
+    @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class})
+    public ErrorInfo bindValidationError(HttpServletRequest req, Exception e) {
+        BindingResult result = e instanceof BindException ?
+                ((BindException) e).getBindingResult() : ((MethodArgumentNotValidException) e).getBindingResult();
+
+        String[] details = result.getFieldErrors().stream()
+                .map(fe -> messageUtil.getMessage(fe))
+                .toArray(String[]::new);
+
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY) //422
+    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
+    public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
+    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)

@@ -6,7 +6,7 @@ public enum ErrorType {
     DATA_ERROR("error.dataError"),
     VALIDATION_ERROR("error.validationError"),
     WRONG_REQUEST("error.wrongRequest"),
-    TIME_OVER("error.timeOver");
+    TIME_EXPIRED("error.timeExpired");
 
     private final String errorCode;
 

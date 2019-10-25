@@ -6,6 +6,7 @@ import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
 import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.repository.UserRepository;
+import ru.graduation.util.exception.IllegalRequestDataException;
 
 import java.time.LocalTime;
 
@@ -23,16 +24,12 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void voteFor(int restaurantId, int userId, LocalTime currentTime) {
         User user = userRepository.getWithRestaurant(userId);
-
         Restaurant restaurant = user.getRestaurant();
-
         if (restaurant != null) {
             checkTime(currentTime);
             restaurantRepository.decreaseRating(restaurant.getId());
         }
-
         restaurantRepository.increaseRating(restaurantId);
-
         user.setRestaurant(restaurantRepository.getReference(restaurantId));
         userRepository.save(user);
     }
@@ -40,12 +37,10 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void cancelChoice(int restaurantId, int userId, LocalTime currentTime) {
         checkTime(currentTime);
-
         User user = userRepository.get(userId);
-
         if (user.getRestaurant() == null || user.getRestaurant().getId() != restaurantId) {
-            //TODO custom exception
-            throw new IllegalArgumentException();
+            String errorMsg = String.format("User with id=%d, didn't vote for the restaurant with id=%d", userId, restaurantId);
+            throw new IllegalRequestDataException(errorMsg);
         }
         restaurantRepository.decreaseRating(restaurantId);
         user.setRestaurant(null);

@@ -9,11 +9,14 @@ import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
 import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.repository.UserRepository;
+import ru.graduation.util.exception.IllegalRequestDataException;
+import ru.graduation.util.exception.TimeExpiredException;
 
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.graduation.RestaurantTestData.*;
+import static ru.graduation.UserTestData.ADMIN_ID;
 import static ru.graduation.UserTestData.USER_ID;
 
 @SpringJUnitConfig(locations = {
@@ -73,24 +76,20 @@ class VoteServiceTest {
 
     @Test
     void testCancelChoiceWithWrongUser() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> {
-            voteService.cancelChoice(RESTAURANT2_ID, USER_ID, mockTime);
-        });
+        voteService.voteFor(RESTAURANT2_ID,ADMIN_ID,mockTime);
+        assertThrows(IllegalRequestDataException.class, () -> voteService.cancelChoice(RESTAURANT2_ID, USER_ID, mockTime));
     }
 
     @Test
     void testCancelChoiceWhenTimeHasPassed() throws Exception {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            voteService.cancelChoice(RESTAURANT2_ID, USER_ID, LocalTime.of(12, 0));
-        });
+        voteService.voteFor(RESTAURANT2_ID,USER_ID,mockTime);
+        assertThrows(TimeExpiredException.class, () -> voteService.cancelChoice(RESTAURANT2_ID, USER_ID, LocalTime.of(12, 0)));
     }
 
     @Test
     void testRevoteWWhenTimeHasPassed() throws Exception {
         voteService.voteFor(RESTAURANT1_ID, USER_ID, mockTime);
-        assertThrows(UnsupportedOperationException.class, () -> {
-            voteService.voteFor(RESTAURANT2_ID, USER_ID, LocalTime.of(12, 0));
-        });
+        assertThrows(TimeExpiredException.class, () -> voteService.voteFor(RESTAURANT2_ID, USER_ID, LocalTime.of(12, 0)));
     }
 
 }
