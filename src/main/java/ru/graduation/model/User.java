@@ -20,12 +20,7 @@ import java.util.*;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "user_unique_email_idx")})
-public class User extends AbstractBaseEntity {
-
-    @NotBlank
-    @Column(name = "name", nullable = false)
-    @SafeHtml
-    private String name;
+public class User extends AbstractNamedEntity {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -65,11 +60,7 @@ public class User extends AbstractBaseEntity {
     }
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        super(id);
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.roles = EnumSet.of(role, roles);
+        this(id, name, email, password, true, new Date(), EnumSet.of(role, roles));
     }
 
     public User(User u) {
@@ -77,17 +68,13 @@ public class User extends AbstractBaseEntity {
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
-        super(id);
+        super(id, name);
         this.name = name;
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.registered = registered;
         setRoles(roles);
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getEmail() {
@@ -112,10 +99,6 @@ public class User extends AbstractBaseEntity {
 
     public Restaurant getRestaurant() {
         return restaurant;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setEmail(String email) {

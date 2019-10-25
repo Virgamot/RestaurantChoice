@@ -5,7 +5,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
 @SuppressWarnings("JpaQlInspection")
@@ -14,13 +13,12 @@ import javax.validation.constraints.Positive;
         @NamedQuery(name = Dish.GET_ALL, query = "SELECT d FROM Dish d")
 })
 
-
 @Entity
 @Table(name = "dishes")
-public class Dish extends AbstractBaseEntity {
+public class Dish extends AbstractNamedEntity {
 
-    public static final String DELETE = "Dish.delete";
-    public static final String GET_ALL = "Dish.getAll";
+    static final String DELETE = "Dish.delete";
+    static final String GET_ALL = "Dish.getAll";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -29,10 +27,6 @@ public class Dish extends AbstractBaseEntity {
     @JsonBackReference
     private Restaurant restaurant;
 
-    @Column(name = "description", nullable = false)
-    @NotEmpty
-    private String description;
-
     @Column(name = "price", nullable = false)
     @Positive
     private Double price;
@@ -40,32 +34,18 @@ public class Dish extends AbstractBaseEntity {
     public Dish() {
     }
 
-    public Dish(String description, Double price) {
-        this.description = description;
-        this.price = price;
+    public Dish(Integer id, String name, Double price) {
+        this(id, name, price, null);
     }
 
-    public Dish(Restaurant restaurant, String description, Double price) {
+    public Dish(Integer id, String name, Double price, Restaurant restaurant) {
+        super(id, name);
         this.restaurant = restaurant;
-        this.description = description;
-        this.price = price;
-    }
-
-    public Dish(Integer id, String description, Double price) {
-        super(id);
-        this.description = description;
-        this.price = price;
-    }
-
-    public Dish(Integer id, Restaurant restaurant, String description, Double price) {
-        super(id);
-        this.restaurant = restaurant;
-        this.description = description;
         this.price = price;
     }
 
     public String getDescription() {
-        return description;
+        return name;
     }
 
     public Double getPrice() {

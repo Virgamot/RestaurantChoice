@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -18,10 +19,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
-public class Restaurant extends AbstractBaseEntity {
+public class Restaurant extends AbstractNamedEntity {
 
-    public static final String DELETE = "Restaurant.delete";
-    public static final String GET_ALL = "Restaurant.getAll";
+    static final String DELETE = "Restaurant.delete";
+    static final String GET_ALL = "Restaurant.getAll";
 
     @Column(name = "address", nullable = false)
     @NotEmpty
@@ -41,27 +42,24 @@ public class Restaurant extends AbstractBaseEntity {
     }
 
     public Restaurant(Restaurant r) {
-        this(r.getId(), r.getAddress(), r.getRating(), r.getDishes());
+        this(r.getId(), r.getName(), r.getAddress(), r.getRating(), r.getDishes());
     }
 
-    public Restaurant(Integer id, String address) {
-        super(id);
-        this.address = address;
+    public Restaurant(Integer id, String name, String address) {
+        this(id, name, address, 0, Collections.emptyList());
     }
 
-    public Restaurant(Integer id, String address, int rating, List<Dish> dishes) {
-        super(id);
+    public Restaurant(Integer id, String name, String address, int rating, Dish... dishes) {
+        this(id, name, address, rating, Arrays.asList(dishes));
+    }
+
+    public Restaurant(Integer id, String name, String address, int rating, List<Dish> dishes) {
+        super(id, name);
         this.address = address;
         this.rating = rating;
         setDishes(dishes);
     }
 
-    public Restaurant(Integer id, String address, int rating, Dish... dishes) {
-        super(id);
-        this.address = address;
-        this.rating = rating;
-        this.dishes = Arrays.asList(dishes);
-    }
 
     public String getAddress() {
         return address;
@@ -85,13 +83,5 @@ public class Restaurant extends AbstractBaseEntity {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public void incrementRating() {
-        this.rating++;
-    }
-
-    public void decrementRating() {
-        this.rating--;
     }
 }
