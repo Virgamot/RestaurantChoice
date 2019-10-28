@@ -21,7 +21,7 @@
         <tomcat.version>8.5.5</tomcat.version>
 
         <!--JSON-->
-        <jackson-json.version>2.9.8</jackson-json.version>
+        <jackson-json.version>2.10.0</jackson-json.version>
 
         <!--Logging-->
         <logback.version>1.2.3</logback.version>
