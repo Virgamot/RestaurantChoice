@@ -13,7 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.graduation.repository.DishRepository;
 import ru.graduation.repository.JpaUtil;
-import ru.graduation.service.RestaurantService;
+import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.service.UserService;
 import ru.graduation.util.exception.ErrorType;
 
@@ -51,7 +51,7 @@ public abstract class AbstractControllerTest {
     protected UserService userService;
 
     @Autowired
-    protected RestaurantService restaurantService;
+    protected RestaurantRepository restaurantRepository;
 
     @Autowired
     protected DishRepository dishRepository;

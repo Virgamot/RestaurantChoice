@@ -1,10 +1,8 @@
 package ru.graduation.web;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
-import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.util.exception.ErrorType;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,9 +20,6 @@ class VoteRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = VoteRestController.REST_URL + "/";
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
     @Test
     void testVoteFor() throws Exception {
         mockMvc.perform(put(REST_URL + RESTAURANT1_ID)
@@ -32,7 +27,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
 
-        Restaurant restaurant = restaurantService.get(RESTAURANT1_ID);
+        Restaurant restaurant = restaurantRepository.get(RESTAURANT1_ID);
         assertEquals(1, restaurant.getRating());
         assertEquals((int) userService.getWithRestaurant(USER_ID).getRestaurant().getId(), RESTAURANT1_ID);
     }

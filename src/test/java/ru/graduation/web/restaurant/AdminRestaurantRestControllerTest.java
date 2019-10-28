@@ -62,7 +62,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         created.setId(returned.getId());
 
         assertMatch(returned, created);
-        assertMatch(restaurantService.getAll(), RESTAURANT_1, RESTAURANT_2, created);
+        assertMatch(restaurantRepository.getAll(), RESTAURANT_1, RESTAURANT_2, created);
     }
 
     @Test
@@ -77,7 +77,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertMatch(restaurantService.getWithDishes(RESTAURANT1_ID), updated);
+        assertMatch(restaurantRepository.getWithDishes(RESTAURANT1_ID), updated);
     }
 
     @Test
@@ -87,7 +87,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertMatch(restaurantService.getAll(), RESTAURANT_2);
+        assertMatch(restaurantRepository.getAll(), RESTAURANT_2);
     }
 
     //TODO
