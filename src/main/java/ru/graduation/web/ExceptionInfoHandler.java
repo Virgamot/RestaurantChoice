@@ -25,6 +25,11 @@ import ru.graduation.util.exception.IllegalRequestDataException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import static ru.graduation.util.exception.ErrorType.APP_ERROR;
 import static ru.graduation.util.exception.ErrorType.DATA_ERROR;
 import static ru.graduation.util.exception.ErrorType.VALIDATION_ERROR;
@@ -38,6 +43,15 @@ public class ExceptionInfoHandler {
     private MessageUtil messageUtil;
 
     public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.user.duplicateEmail";
+    public static final String EXCEPTION_DUPLICATE_RESTAURANT_NAME = "exception.restaurant.duplicateName";
+
+    private static final Map<String, String> CONSTRAITS_I18N_MAP = Collections.unmodifiableMap(
+            new HashMap<String, String>() {
+                {
+                    put("users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL);
+                    put("restaurants_unique_name_idx", EXCEPTION_DUPLICATE_RESTAURANT_NAME);
+                }
+            });
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorInfo> applicationError(HttpServletRequest req, ApplicationException appEx) {
@@ -51,9 +65,17 @@ public class ExceptionInfoHandler {
         String rootMsg = ValidationUtil.getRootCause(e).getMessage();
 
         if (rootMsg != null) {
-            if (rootMsg.toLowerCase().contains("users_unique_email_idx")) {
-                return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageUtil.getMessage(EXCEPTION_DUPLICATE_EMAIL));
+            String lowerCaseMsg = rootMsg.toLowerCase();
+            Optional<Map.Entry<String, String>> entry = CONSTRAITS_I18N_MAP.entrySet().stream()
+                    .filter(it -> lowerCaseMsg.contains(it.getKey()))
+                    .findAny();
+
+            if (entry.isPresent()) {
+                return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageUtil.getMessage(entry.get().getValue()));
             }
+//            if (rootMsg.toLowerCase().contains("users_unique_email_idx")) {
+////                return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageUtil.getMessage(EXCEPTION_DUPLICATE_EMAIL));
+////            }
         }
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }

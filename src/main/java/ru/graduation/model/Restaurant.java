@@ -5,7 +5,9 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +27,8 @@ public class Restaurant extends AbstractNamedEntity {
     static final String GET_ALL = "Restaurant.getAll";
 
     @Column(name = "address", nullable = false)
-    @NotEmpty
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

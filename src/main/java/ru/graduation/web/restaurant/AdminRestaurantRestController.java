@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static ru.graduation.util.ValidationUtil.assureIdConsistent;
+
 @RestController
 @RequestMapping(AdminRestaurantRestController.REST_URL)
 public class AdminRestaurantRestController extends AbstractRestaurantController {
@@ -43,14 +45,11 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    /*
-        TODO without id not RESTful?
-        something like id-consistent?
-     */
-    @PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable("id") int restaurantId,
                        @AuthenticationPrincipal AuthorizedUser authorizedUser) {
+        assureIdConsistent(restaurant, restaurantId);
         super.update(restaurant, authorizedUser.getId());
     }
 
