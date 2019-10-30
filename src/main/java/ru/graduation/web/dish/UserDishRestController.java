@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.graduation.model.Dish;
 import ru.graduation.repository.DishRepository;
+import ru.graduation.to.DishTo;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class UserDishRestController {
     private DishRepository repository;
 
     @GetMapping("/{id}")
-    public Dish get(@PathVariable("id") int id) {
+    public DishTo get(@PathVariable("id") int id) {
         LOG.info("get dish {}", id);
-        return repository.get(id);
+        return new DishTo(repository.get(id));
     }
 
     @GetMapping

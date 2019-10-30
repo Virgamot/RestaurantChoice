@@ -73,9 +73,6 @@ public class ExceptionInfoHandler {
             if (entry.isPresent()) {
                 return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageUtil.getMessage(entry.get().getValue()));
             }
-//            if (rootMsg.toLowerCase().contains("users_unique_email_idx")) {
-////                return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageUtil.getMessage(EXCEPTION_DUPLICATE_EMAIL));
-////            }
         }
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }

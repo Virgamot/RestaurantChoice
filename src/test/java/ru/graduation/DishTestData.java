@@ -1,5 +1,6 @@
 package ru.graduation;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.graduation.model.Dish;
 import ru.graduation.to.DishTo;
 
@@ -7,10 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.graduation.RestaurantTestData.RESTAURANT2_ID;
 import static ru.graduation.RestaurantTestData.RESTAURANT_1;
 import static ru.graduation.RestaurantTestData.RESTAURANT_2;
 import static ru.graduation.model.AbstractBaseEntity.START_SEQ;
+import static ru.graduation.web.json.JsonUtil.writeIgnoreProps;
 
 
 public class DishTestData {
@@ -51,5 +54,13 @@ public class DishTestData {
 
     public static void assertMatch(Iterable<Dish> actual, Iterable<Dish> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(Dish expected) {
+        return content().json(writeIgnoreProps(expected, "restaurant"));
+    }
+
+    public static ResultMatcher contentJson(List<Dish> expected) {
+        return content().json(writeIgnoreProps(expected, "restaurant"));
     }
 }

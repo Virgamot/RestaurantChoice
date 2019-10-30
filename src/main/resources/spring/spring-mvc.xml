@@ -9,6 +9,9 @@
 
     <bean class="ru.graduation.web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
 
+    <!--serve static resources (*.html, ...) from src/main/webapp-->
+    <mvc:default-servlet-handler/>
+
     <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
 
     <mvc:annotation-driven>
@@ -24,6 +27,10 @@
     </mvc:annotation-driven>
 
     <context:component-scan base-package="ru.graduation.web"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/"
+          p:suffix=".jsp"/>
 
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
           p:cacheSeconds="5"

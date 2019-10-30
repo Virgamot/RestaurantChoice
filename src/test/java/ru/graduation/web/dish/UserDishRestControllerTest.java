@@ -4,15 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import ru.graduation.web.AbstractControllerTest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.graduation.DishTestData.DISH1_ID;
-import static ru.graduation.DishTestData.DISHES;
-import static ru.graduation.DishTestData.DISH_1;
-import static ru.graduation.TestUtil.contentJson;
+import static ru.graduation.DishTestData.*;
 import static ru.graduation.TestUtil.userHttpBasic;
 import static ru.graduation.UserTestData.USER;
 

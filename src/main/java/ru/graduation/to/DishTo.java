@@ -1,9 +1,10 @@
 package ru.graduation.to;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
+import ru.graduation.model.Dish;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 public class DishTo extends BaseTo implements Serializable {
@@ -12,7 +13,7 @@ public class DishTo extends BaseTo implements Serializable {
 
     @NotBlank
     @SafeHtml
-    private String description;
+    private String name;
 
     @NotEmpty
     private Double price;
@@ -22,15 +23,19 @@ public class DishTo extends BaseTo implements Serializable {
     public DishTo() {
     }
 
-    public DishTo(Integer id, String description, Double price, int restaurantId) {
+    public DishTo(Dish dish) {
+        this(dish.getId(), dish.getDescription(), dish.getPrice(), dish.getRestaurant().getId());
+    }
+
+    public DishTo(Integer id, String name, Double price, int restaurantId) {
         super(id);
-        this.description = description;
+        this.name = name;
         this.price = price;
         this.restaurantId = restaurantId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
     public Double getPrice() {
@@ -44,7 +49,7 @@ public class DishTo extends BaseTo implements Serializable {
     @Override
     public String toString() {
         return "DishTo{" +
-                "description='" + description + '\'' +
+                "name='" + name + '\'' +
                 ", price=" + price +
                 ", restaurantId=" + restaurantId +
                 ", id=" + id +
