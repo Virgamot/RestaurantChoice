@@ -7,18 +7,9 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 
-@SuppressWarnings("JpaQlInspection")
-@NamedQueries({
-        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id"),
-        @NamedQuery(name = Dish.GET_ALL, query = "SELECT d FROM Dish d")
-})
-
 @Entity
 @Table(name = "dishes")
 public class Dish extends AbstractNamedEntity {
-
-    static final String DELETE = "Dish.delete";
-    static final String GET_ALL = "Dish.getAll";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
