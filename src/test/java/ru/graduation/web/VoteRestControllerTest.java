@@ -1,6 +1,8 @@
 package ru.graduation.web;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
 import ru.graduation.util.exception.ErrorType;
@@ -33,6 +35,7 @@ class VoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     void testRevote() throws Exception {
         mockMvc.perform(put(REST_URL + RESTAURANT1_ID)
                 .param("time", "10:30")
@@ -44,10 +47,8 @@ class VoteRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
 
-
-        //TODO is something wrong with Hibernate cache?
-        //Restaurant restaurant1 = restaurantRepository.get(RESTAURANT1_ID);
-        //assertEquals(0, restaurant1.getRating());
+        Restaurant restaurant1 = restaurantRepository.get(RESTAURANT1_ID);
+        assertEquals(0, restaurant1.getRating());
 
         Restaurant restaurant2 = restaurantRepository.get(RESTAURANT2_ID);
         assertEquals(1, restaurant2.getRating());

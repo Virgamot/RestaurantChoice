@@ -2,6 +2,7 @@ package ru.graduation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
 import ru.graduation.repository.RestaurantRepository;
@@ -22,8 +23,10 @@ public class VoteServiceImpl implements VoteService {
     private RestaurantRepository restaurantRepository;
 
     @Override
+    @Transactional
     public void voteFor(int restaurantId, int userId, LocalTime currentTime) {
-        User user = userRepository.getWithRestaurant(userId);
+        User user = userRepository.get(userId);
+
         Restaurant restaurant = user.getRestaurant();
         if (restaurant != null) {
             checkTime(currentTime);
@@ -35,6 +38,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    @Transactional
     public void cancelChoice(int restaurantId, int userId, LocalTime currentTime) {
         checkTime(currentTime);
         User user = userRepository.get(userId);

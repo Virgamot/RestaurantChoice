@@ -1,5 +1,6 @@
 package ru.graduation.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -7,6 +8,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.graduation.model.Restaurant;
 import ru.graduation.model.User;
+import ru.graduation.repository.JpaUtil;
 import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.repository.UserRepository;
 import ru.graduation.util.exception.IllegalRequestDataException;
@@ -35,7 +37,16 @@ class VoteServiceTest {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private JpaUtil jpaUtil;
+
     private static LocalTime mockTime = LocalTime.of(10, 0);
+
+
+    @BeforeEach
+    void setUp() {
+        jpaUtil.clear2ndLevelHibernateCache();
+    }
 
     @Test
     void testVoteFor() throws Exception {

@@ -1,11 +1,7 @@
 package ru.graduation.model;
 
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +30,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     @Column(name = "rating", nullable = false)
     @Digits(integer = 10, fraction = 0)
-    @Range(min = 0)
+    @PositiveOrZero
     private int rating;
 
     public Restaurant() {
