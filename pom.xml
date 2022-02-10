@@ -31,7 +31,7 @@
         <hsqldb.version>2.4.1</hsqldb.version>
 
         <!--Hibernate-->
-        <hibernate.version>5.4.2.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <hibernate-validator.version>6.0.14.Final</hibernate-validator.version>
         <jsoup.version>1.11.3</jsoup.version>
 
