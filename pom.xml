@@ -33,7 +33,7 @@
         <!--Hibernate-->
         <hibernate.version>5.4.2.Final</hibernate.version>
         <hibernate-validator.version>6.0.14.Final</hibernate-validator.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
 
         <!--Tools-->
         <ehcache.version>3.5.2</ehcache.version>
